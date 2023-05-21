@@ -1,0 +1,178 @@
+SQL JOINS 
+----------------
+* CROSS JOIN
+----------------
+
+-SELECT * FROM jack.users1 t1
+ CROSS JOIN jack.groups t2
+
+----------------
+* INNER JOIN
+----------------
+- SELECT * FROM jack.membership t1
+  INNER JOIN jack.users1 t2
+  ON t1.user_id = t2.user_id
+
+-------------------------
+* LEFT JOIN
+--------------------------
+
+-SELECT * FROM jack.membership t1
+LEFT JOIN jack.users1 t2
+ON t1.user_id = t2.user_id
+
+---------------------------
+* RIGHT JOIN
+--------------------------
+
+SELECT * FROM jack.membership t1
+RIGHT JOIN jack.users1 t2
+ON t1.user_id = t2.user_id
+
+..........................
+  SET OPERATIONS 
+..........................
+
+* UNION 
+
+- SELECT * FROM jack.person1
+ UNION
+ SELECT * FROM jack.person2
+
+* UNION ALL
+
+- SELECT * FROM jack.person1
+  UNION ALL
+  SELECT * FROM jack.person2
+
+* INTERSECT
+
+- SELECT * FROM jack.person1
+  INTERSECT 
+  SELECT * FROM jack.person2;
+
+* EXPECT
+
+- SELECT * FROM jack.person1
+  EXPECT
+  SELECT * FROM jack.person2;
+
+
+----------------------------------
+      FULL OUTER JOIN
+----------------------------------
+
+You have to combine both left join 
+and Right join . Apply UNION in the middle of them 
+
+
+- SELECT * FROM jack.membership t1
+  LEFT JOIN jack.users1 t2
+  ON t1.user_id = t2.user_id
+  UNION
+  SELECT * FROM jack.membership t1
+  RIGHT JOIN jack.users1 t2
+  ON t1.user_id = t2.user_id;
+
+----------------------------------
+           SELF JOIN 
+-----------------------------------
+
+joins on itself using condition 
+
+- SELECT * FROM jack.users1 t1
+  JOIN jack.users1 t2
+  ON t1.emergency_contact = t2.user_id
+
+--------------------------------------
+    Joining ON TWO Tables
+--------------------------------------
+
+- SELECT * FROM jack.students t1
+  JOIN jack.class t2
+  ON t1.class_id = t2.class_id
+  AND
+  t1.enrollment_year = t2.class_year
+
+----------------------------------------------
+         Joining ON THREE Tables 
+----------------------------------------------
+
+* To extract name column , we join three tables  
+   order_details -1 , orders -2 , users -3
+
+- SELECT * FROM flipkart.order_details t1
+  JOIN flipkart.orders t2
+  ON t1.order_id = t2.order_id 
+  JOIN flipkart.users t3
+  ON t2.user_id = t3.user_id 
+
+* Extracting desired columns
+
+- SELECT t1.order_id ,t1.amount,t1.profit,t3.name
+  FROM flipkart.order_details t1
+  JOIN flipkart.orders t2
+  ON t1.order_id = t2.order_id 
+  JOIN flipkart.users t3
+  ON t2.user_id = t3.user_id
+
+* Find the order ID,name ,city. By Joining Users, and orders.
+
+- SELECT t1.order_id,t2.city,t2.name
+  FROM flipkart.orders t1
+  JOIN flipkart .users t2 
+  ON t1.user_id =t2.user_id
+
+*  Find Order ID , vertical by joining order details and category.
+
+-  SELECT t1.order_id ,t2.vertical
+   FROM flipkart.order_details t1
+   JOIN flipkart.category t2
+   ON t1.category_id = t2.category_id;
+
+------------------------------------------
+     FILTERING ROWS
+------------------------------------------
+
+* Find all the orders placed in pune
+ 
+- SELECT * FROM flipkart.orders t1
+  JOIN flipkart.users t2
+  ON t1.user_id = t2.user_id
+  WHERE t2.city = 'Pune'
+
+--------------------------------------------
+           Pratice
+--------------------------------------------
+
+1. Find all profitable orders
+
+- SELECT t1.order_id , SUM(t2.profit) AS 'PROFIT_SUM'
+  FROM flipkart.orders t1
+  JOIN flipkart.order_details t2
+  ON t1.order_id = t2.order_id
+  GROUP BY order_id
+  HAVING PROFIT_SUM > 0 
+  ORDER BY PROFIT_SUM DESC LIMIT 10
+
+
+2. Find the customer who has placed max number of orders
+
+- SELECT name , COUNT(*) FROM flipkart.orders t1
+  JOIN flipkart.users t2
+  ON t1.user_id =t2.user_id
+  GROUP BY t2.name
+  ORDER BY COUNT(*) DESC 
+ 
+
+3. Which is the most profitable category
+ 
+- SELECT t1.vertical ,SUM(t2.profit)  from flipkart.category t1
+  JOIN flipkart.order_details t2
+  ON t1.category_id =t2.category_id
+  GROUP BY t1.vertical 
+  ORDER BY SUM(t2.profit) DESC LIMIT 1
+
+4. Which is the most profitable state
+
+5. Find all categories with profit higher than 5000

@@ -1,0 +1,235 @@
+CHAPTERS : SORTING DATA , GROUP BY , HAVING CLAUSE 
+**************************************************************************
+ Sorting Data
+***************************************************************************
+
+1. find the top 5 Samsung phones with the biggest screen size
+
+- SELECT model,screen_size FROM campusx.smartphones
+  WHERE brand_name='samsung' 
+  ORDER BY screen_size DESC LIMIT 5
+
+2. sort all the phones in descending order of the number of total cameras 
+
+- SELECT model, num_rear_cameras + num_front_cameras AS 'total_cameras'
+  FROM campusx.smartphones ORDER BY total_cameras DESC
+
+
+3. sort data on the basis of ppi in decreasing order
+
+- SELECT model,
+  ROUND(SQRT(resolution_width*resolution_width + resolution_height * resolution_height)/ screen_size) AS 'ppi'
+  FROM campusx.smartphones
+  ORDER BY ppi DESC 
+
+4. find the phone with 2nd largest battery
+
+- SELECT model , battery_capacity 
+  FROM campusx.smartphones 
+  ORDER BY battery_capacity 
+  DESC LIMIT 1,1
+
+
+* HERE  LIMIT 1,1
+means START from - 1 and take 1 rows
+ignore 0 =1
+
+* HERE  LIMIT 4,2
+means START from -4 and take 2 rows
+ignore 0,1,2,3 =4
+
+5. find the name and rating of the worst rated apple phone
+
+- SELECT model , rating
+  FROM campusx.smartphones 
+  WHERE brand_name='apple'
+  ORDER BY  rating ASC LIMIT 1
+ 
+6. sort phones alphabetically and then on the basis of rating in desc order
+
+-  SELECT * FROM campusx.smartphones
+   ORDER BY brand_name ASC, rating DESC
+
+
+7. sort phones alphabetically and then on the basis of price in ascending order
+
+-  SELECT * FROM campusx.smartphones
+   ORDER BY brand_name ASC, price ASC
+
+ 
+
+ 
+*********************************************************************************************************
+ Grouping Data
+*********************************************************************************************************
+
+1. Group smartphones by brand and get the count, average price, max rating, avg screen size, and avg battery capacity
+  
+-  SELECT brand_name ,COUNT(*) AS 'num_phones',
+   ROUND(AVG(price)) AS 'avg_price',
+   MAX(rating) AS 'max_rating',
+   ROUND(AVG(screen_size),2) AS 'avg_screen',
+   ROUND(AVG(battery_capacity),2) AS 'avg_battery'
+   FROM campusx.smartphones
+   GROUP BY brand_name 
+   ORDER BY num_phones DESC LIMIT 5
+
+2.Group smartphones by whether they have an NFC and get the average price and rating
+
+- SELECT has_nfc, 
+  AVG(price) AS 'avg_price',
+  AVG(rating) AS 'avg_ratimg'
+  FROM campusx.smartphones
+  GROUP BY  has_nfc
+  
+
+3. Avg price of 5g phones vs avg price of non 5g phones
+
+- SELECT has_5g, 
+  AVG(price) AS 'avg_price',
+  AVG(rating) AS 'avg_ratimg'
+  FROM campusx.smartphones
+  GROUP BY  has_5g
+
+4. Analysis of Fast Charging Available
+
+- SELECT fast_charging_available, 
+  AVG(price) AS 'avg_price',
+  AVG(rating) AS 'avg_rating'
+  FROM campusx.smartphones
+  GROUP BY  fast_charging_available
+
+5.  Group smartphones by the extended memory available and get the average price
+ 
+- SELECT extended_memory_available ,
+  AVG(price) AS 'avg_price'
+  FROM campusx.smartphones
+  GROUP BY extended_memory_available
+
+****** GroupBY on multiple columns*****
+
+6.  Group smartphones by the brand and processor brand and get the count of models and the average primary camera resolution (rear)
+
+- SELECT brand_name,
+  processor_brand,
+  COUNT(*) AS ' number_of_phones',
+  ROUND(AVG(primary_camera_rear)) AS 'avg_camera resolution'
+  FROM campusx.smartphones
+  GROUP BY brand_name, processor_brand
+
+
+7.  Find the top 5 most costly phone brands
+
+- SELECT brand_name,
+  ROUND(AVG(price)) AS 'avg_price'
+  FROM campusx.smartphones
+  GROUP BY brand_name
+  ORDER BY avg_price DESC LIMIT 5 
+
+8.  Which brand makes the smallest-screen smartphones
+
+-  SELECT brand_name,
+   ROUND(AVG(screen_size)) AS 'avg_screen'
+   FROM campusx.smartphones
+   GROUP BY brand_name
+   ORDER BY avg_screen  ASC LIMIT 1
+
+9. Group smartphones by the brand, and find the brand with the highest number of models that have both NFC and an IR blaster
+
+-  SELECT brand_name , COUNT(*) AS 'count' 
+   FROM campusx.smartphones  
+   WHERE has_nfc = 'True' AND has_ir_blaster = 'True'
+   GROUP BY brand_name
+   ORDER BY count DESC LIMIT 1
+
+10. Find all Samsung 5g enabled smartphones and find out the avg price for NFC and Non-NFC phones
+
+-  SELECT  has_nfc , AVG(price) AS 'avg_price'
+   FROM campusx.smartphones
+   WHERE  brand_name='samsung'
+   GROUP BY has_nfc
+ 
+
+*************************************************************************************************************
+  Having clause ( with GROUP BY) same like (SELECT - WHERE) 
+************************************************************************************************************
+ 
+1. Costliest Brand which has at least 20 phones.
+
+- SELECT brand_name,
+  COUNT(*) AS 'count',
+  AVG(price) AS 'avg_price'
+  FROM campusx.smartphones
+  GROUP BY brand_name
+  HAVING count > 20 
+  ORDER BY avg_price DESC 
+
+2. find the avg rating of smartphone brands that have more than 20 phones
+
+- SELECT brand_name,
+  COUNT(*) AS 'count',
+  round(AVG(rating),2) AS 'avg_rating'
+  FROM campusx.smartphones
+  GROUP BY brand_name
+  HAVING count > 20 
+  ORDER BY avg_rating DESC 
+
+3. Find the top 3 brands with the highest avg ram that has a refresh rate of at least 90 Hz and
+    fast charging available and don't consider brands that have less than 10 phones
+
+ - SELECT  brand_name,
+   AVG(ram_capacity) AS 'avg_ram'
+   FROM campusx.smartphones
+   WHERE refresh_rate > 90 AND fast_charging_available =1
+   GROUP BY brand_name
+   HAVING COUNT(*)> 10
+   ORDER BY avg_ram  DESC LIMIT 3
+
+4. Find the avg price of all the phone brands with avg rating of 70 and num_phones more than 10 among all 5g enabled phones
+
+- SELECT brand_name ,
+  AVG(price) AS 'avg_price'
+  FROM campusx.smartphones
+  WHERE has_5g ='TRUE'
+  GROUP BY brand_name
+  HAVING AVG(rating) > 70 AND count(*) > 10 
+  ORDER BY avg_price DESC LIMIT 5  
+ 
+
+                                                                       # mistake : FORGOT TO metion 5g phones 
+
+ 
+*************************************************************************************************************
+ Practice on IPL Dataset
+*************************************************************************************************************
+ 
+1. find the top 5 batsmen in IPL
+
+- SELECT batter, SUM(batsman_run) AS 'runs'
+  FROM campusx.ipl_ball_by_ball_2008_2022
+  GROUP BY batter 
+  ORDER BY runs DESC LIMIT 5
+
+2.  find the 2nd highest 6 hitters in IPL
+
+- SELECT batter , COUNT(*)  
+  FROM campusx.ipl_ball_by_ball_2008_2022
+  WHERE batsman_run = 6
+  GROUP BY batter 
+  ORDER BY COUNT(*) DESC  LIMIT 1,1
+
+3. Find Virat Kohli's performance against all IPL teams [info not available- bowling team]
+
+4.Find the top 10 batsmen with centuries in IPL [Need sub-query]
+
+
+5. find the top 5 batsmen with the highest strike rate who have played a min of 1000 balls
+
+- SELECT batter, SUM(batsman_run), COUNT(batsman_run),
+  ROUND((SUM(batsman_run) / COUNT(batsman_run))*100, 2) AS 'sr'
+  FROM campusx.ipl_ball_by_ball_2008_2022
+  GROUP BY batter
+  HAVING COUNT(batsman_run) > 1000
+  ORDER BY sr DESC
+  LIMIT 5;
+ 

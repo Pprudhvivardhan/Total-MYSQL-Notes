@@ -1,0 +1,229 @@
+Creating the DataBase:
+--------------------------------------------------------------------------------------------------
+CREATE DATABASE campusx
+
+
+Creating the table : 
+---------------------------------------------------------------------------------------------------
+CREATE TABLE users( 
+    user_id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL  
+)
+
+inserting data :
+---------------------------------------------------------------------------------------------------
+
+ INSERT INTO campusx.users VALUES
+ - (NULL,'jack','jack@gmail.com','1232');
+---------------------------------------------------------------------------------------------------
+
+CRUD Operations = CREATE , RETRIVE , UPDATE , DELETE
+
+
+1. Import data into MySQL Workbench ( from table , we have to import)
+
+2. SELECT all columns 
+ - SELECT * FROM campusx.users 
+ - SELECT * FROM campusx.users WHERE 1;
+
+3. filter columns
+ - SELECT model,rating,price FROM campusx.smartphones
+ - SELECT brand_name ,has_5g , model FROM campusx.smartphones
+ -  SELECT os  ,has_5g , model FROM campusx.smartphones
+
+4. alias | renaming columns
+ -  SELECT os AS 'operating system' ,has_5g AS '5G' , model FROM campusx.smartphones;
+
+5. create expression using columns
+ - select model,rating/10 FROM campusx.smartphones ( total rating of the smartphones)
+ - SELECT model,resolution_width * resolution_width FROM campusx.smartphones ( for calclucating ppi value)
+ - SELECT model,resolution_width * resolution_width+resolution_height * resolution_height FROM campusx.smartphones
+ - SELECT model,
+   SQRT(resolution_width * resolution_width+resolution_height * resolution_height) / screen_size AS 'ppi'
+   FROM campusx.smartphones
+
+6. constant value
+
+ -  SELECT modeL, 'smartphone'AS 'Type' FROM smartphones
+  
+7. DISTINCT(unique) values from a column
+ 
+- SELECT DISTINCT(brand_name) AS 'all_brands' FROM  campusx.smartphones;
+- SELECT DISTINCT(processor_brand) AS 'all_processor'  FROM campusx.smartphones; 
+- SELECT DISTINCT(os) AS 'all_os' FROM campusx.smartphones;
+
+8. DISTINCTcombinations
+
+-SELECT DISTINCT brand_name , processor_brand FROM campusx.smartphones;
+-SELECT DISTINCT model, rating FROM campusx.smartphones;
+ 
+
+9. Filter rows WHERE clause
+
+- Find all Samsung phones.
+ SELECT * FROM campusx.smartphones WHERE brand_name='samsung'
+
+- find all the phone prices Above 50k
+ SELECT * FROM campusx.smartphones WHERE  price>50000
+
+10 . BETWEEN OPERATER
+
+- find all the phone prices Between 10,000 to 20,000
+
+ SELECT * FROM campusx.smartphones WHERE  price> 10000 AND price < 20000
+ SELECT * FROM campusx.smartphones WHERE price BETWEEN 10000 AND 20000
+
+
+- find phone price is below 25000 and rating with 80 and processor brand is 'snapdragon'
+
+SELECT * FROM campusx.smartphones WHERE price <25000 AND rating>80 AND processor_brand='snapdragon'
+
+- find all samsung phones ram is greater than 8GB
+
+ SELECT * FROM campusx.smartphones WHERE brand_name = 'samsung' AND ram_capacity>8
+
+
+11. Query Execution Order
+
+find brands who sell phones with price > 50000 IN and NOT IN
+
+SELECT * FROM campusx.smartphones WHERE processor_brand IN ('snapdragon','exynos','bionic')
+SELECT * FROM campusx.smartphones WHERE processor_brand  NOT IN ('snapdragon','exynos','bionic')
+
+------------------------------------------------------------------------------------------------------------------
+
+*  Update ( Permanent Operations)
+
+12. update processor brand 'mediatek ' to 'dimensity' using UPDATE query
+
+- SELECT * FROM campusx.smartphones WHERE processor_brand ='mediatek'
+
+- UPDATE campusx.smartphones SET processor_brand ='dimensity' WHERE processor_brand= 'mediatek'
+
+
+
+UPDATE campusx.users SET email= 'prudhvi@yahoo.com ', password ='121212'
+WHERE name = 'prudhvi'
+
+--------------------------------------------------------------------------------------------------------------------
+
+- Delete ( Permanent Operations)
+
+delete all phones price > 200000
+
+   SELECT * FROM campusx.smartphones WHERE price>200000
+   DELETE FROM campusx.smartphones WHERE price > 200000
+
+
+delete all the samsung brand phone with primary_camera_rear is greater than 150
+ 
+  SELECT * FROM campusx.smartphones WHERE primary_camera_rear > 150 AND brand_name ='samsung'
+  DELETE FROM campusx.smartphones WHERE primary_camera_rear > 150 AND brand_name ='samsung'
+
+-----------------------------------------------------------------------------------------------------------------------
+- Types of functions in SQL
+
+-Aggregate Functions
+
+-> MAX/MIN
+
+**find the minimum and maximum price
+
+ SELECT MAX(price) FROM campusx.smartphones;
+ SELECT MIN(ram_capacity) FROM campusx.smartphones;
+
+ ** find the price of the costliest samsung phone
+
+SELECT MAX(price) FROM campusx.smartphones WHERE brand_name='samsung' 
+SELECT * FROM campusx.smartphones WHERE brand_name='samsung' AND price=163980
+
+-> AVG
+
+**find avg rating and price of apple phones
+
+SELECT AVG(rating) FROM campusx.smartphones WHERE brand_name='apple';
+
+SELECT AVG(price) FROM campusx.smartphones WHERE brand_name='apple';
+
+-> SUM
+
+SELECT SUM(price) FROM campusx.smartphones;
+
+> COUNT
+
+**find the number of oneplus phones
+
+SELECT COUNT(*) FROM campusx.smartphones WHERE brand_name='samsung'
+
+
+-> COUNT(DISTINCT)
+
+ ** find the number of brands available
+
+ SELECT COUNT(DISTINCT(brand_name)) FROM campusx.smartphones 
+ SELECT COUNT(DISTINCT(processor_brand)) FROM campusx.smartphones 
+
+-> STD
+
+**find std of screen sizes
+
+SELECT STD(screen_size) FROM campusx.smartphones;
+
+
+
+-> VAR
+
+**find variance of Xiomi phone prices
+
+SELECT VARIANCE(screen_size) FROM campusx.smartphones;
+
+----------------------------------------------------------------------------------------
+
+Scalar Functions
+
+-> ABS()
+
+SELECT ABS(price - 100000) AS 'temp' FROM campusx.smartphones;
+
+-> ROUND
+
+**round the ppi tos decimal place
+
+SELECT model,
+   ROUND(SQRT(resolution_width * resolution_width+resolution_height * resolution_height) / screen_size,2) AS 'ppi'
+   FROM campusx.smartphones
+
+
+-> CEIL/FLOOR
+
+
+ceil 
+ 5.2 -> 6
+ 6.6 -> 7
+floor 
+ 5.5 -> 5
+ 6.6 -> 6
+
+SELECT CEIL (fast_charging) FROM campusx.smartphones;
+SELECT FLOOR(fast_charging) FROM campusx.smartphones;
+
+
+Roor/call the rating
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
