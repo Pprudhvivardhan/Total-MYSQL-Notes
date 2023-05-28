@@ -1,5 +1,7 @@
 # SQL-topics
 
+✏️ My Total SQL Notes are meticulously crafted to provide you with a comprehensive understanding of SQL, covering a wide range of topics and different kinds of queries. Whether you're a beginner or an experienced SQL user, our notes are designed to enhance your knowledge and sharpen your SQL skills.
+
 📣🌟 I have delved into various SQL topics, and I can't wait to share my knowledge with you all. 🤩📚
 
 🔹🔍 Throughout my learning journey, I have explored and grasped the concepts of:
@@ -18,7 +20,7 @@
 
 🔹🔢 Moreover, I have mastered window functions, empowering me to perform complex calculations and analysis over specified subsets of data. 🪟🧮
 
-🔹🤝 With this comprehensive understanding of SQL, including subqueries and window functions, I am equipped to tackle data-related challenges and optimize database operations even further. 💼📈
+🔹🤝 With this comprehensive understanding of SQL, including **subqueries and window functions**, I am equipped to tackle data-related challenges and optimize database operations even further. 💼📈
 
 🔹🔗 If you're interested in discussing SQL, sharing insights, or collaborating on projects, feel free to connect! Let's leverage the power of SQL together. 🤝💡
 
