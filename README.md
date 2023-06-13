@@ -1,6 +1,6 @@
 # SQL-topics
 
-✏️ My Total SQL Notes are meticulously crafted to provide you with a comprehensive understanding of SQL, covering a wide range of topics and different kinds of queries. Whether you're a beginner or an experienced SQL user, our notes are designed to enhance your knowledge and sharpen your SQL skills
+✏️ My Total SQL Notes are meticulously crafted to provide you with a comprehensive understanding of SQL, covering a wide range of topics and different kinds of queries. Whether you're a beginner or an experienced SQL user, our notes are designed to enhance your knowledge and sharpen your SQL skills📚
 
 📣🌟 I have delved into various SQL topics, and I can't wait to share my knowledge with you all. 🤩📚
 
